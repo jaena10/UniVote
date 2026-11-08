@@ -1,0 +1,2 @@
+# UniVote Python Dependencies
+# Runs natively on Python 3 standard library

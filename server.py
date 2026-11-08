@@ -3,12 +3,20 @@ import socketserver
 import os
 from urllib.parse import urlparse
 
-PORT = 5000
+PORT = int(os.environ.get('PORT', 5000))
 
 class UniVoteHandler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
         parsed = urlparse(self.path)
         clean_path = parsed.path.rstrip('/')
+
+        # Health check endpoint for Render
+        if clean_path in ['/health', '/healthz', '/ping']:
+            self.send_response(200)
+            self.send_header('Content-Type', 'text/plain; charset=utf-8')
+            self.end_headers()
+            self.wfile.write(b"OK")
+            return
 
         # Normalize admin routes
         if clean_path in ['/admin', '/adminweb', '/adminweb.html', '/admin.html']:
@@ -24,13 +32,13 @@ if __name__ == '__main__':
     script_dir = os.path.dirname(os.path.abspath(__file__))
     os.chdir(script_dir)
     
-    socketserver.TCPServer.allow_reuse_address = True
-    with socketserver.TCPServer(("", PORT), UniVoteHandler) as httpd:
+    server_address = ("0.0.0.0", PORT)
+    with http.server.ThreadingHTTPServer(server_address, UniVoteHandler) as httpd:
         print("==================================================")
-        print(f"UniVote Server running at http://127.0.0.1:{PORT}/")
-        print(f"Student Portal: http://127.0.0.1:{PORT}/")
-        print(f"Admin Console:  http://127.0.0.1:{PORT}/admin")
-        print("Press Ctrl + C to stop.")
+        print("UniVote System - University of the Assumption")
+        print(f"Server listening on http://0.0.0.0:{PORT}/")
+        print(f"Student Portal: http://0.0.0.0:{PORT}/")
+        print(f"Admin Console:  http://0.0.0.0:{PORT}/admin")
         print("==================================================")
         try:
             httpd.serve_forever()
