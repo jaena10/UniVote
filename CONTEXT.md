@@ -1,134 +1,159 @@
 # UniVote — Project Context & Architecture
-**Last Updated**: 2026-11-08 18:48 PHT  
+**Last Updated**: 2026-11-09 00:22 PHT  
 **Institution**: University of the Assumption (UA Pampanga)  
 **Working Directory**: `D:\CODINGS\univote`  
-**Server Command**: `python server.py` → Port `5000`
+**GitHub Repository**: [https://github.com/jaena10/UniVote.git](https://github.com/jaena10/UniVote.git)  
+**Render Deployment**: Configured via `render.yaml` (Free Tier)  
 
-| Portal | URL |
-|---|---|
-| Student Voting Portal | http://127.0.0.1:5000/ |
-| Admin Console | http://127.0.0.1:5000/admin |
-| Admin Credentials | Username: `admin` / Password: `ua2026admin` |
+| Portal | URL | Description |
+|---|---|---|
+| Student Voting Portal | `http://127.0.0.1:5000/` | Student voting, candidate directory, partylists, results |
+| Admin Management Console | `http://127.0.0.1:5000/admin` | Live tallies, winners by department, clear voting data, roster |
+| Health Check Endpoint | `http://127.0.0.1:5000/healthz` | Zero-downtime healthcheck endpoint for Render |
+| Default Admin Credentials | Username: `admin` / Password: `ua2026admin` | UA Election Commission administrative credentials |
 
 ---
 
-## 1. File Structure
+## 1. Project File Structure
 ```
 D:\CODINGS\univote\
-├── server.py                   # Python HTTP server routing / and /admin on port 5000
-├── build_full_univote.py       # Master generator — run to rebuild both HTML files
-├── update_univote.py           # Synchronized runner (synced by build_full_univote.py)
-├── clear_voting_data.py        # Administrative CLI data wipe utility
-├── CONTEXT.md                  # This file
+├── server.py                   # High-performance multi-threaded Python HTTP server (Render ready)
+├── app.py                      # Alternative Flask WSGI backend
+├── render.yaml                 # Render Infrastructure-as-Code Blueprint configuration (Free Tier)
+├── Dockerfile                  # Containerized deployment specification (python:3.11-slim)
+├── requirements.txt            # Python dependencies (Standard Library native)
+├── .gitignore                  # Git ignore rules (__pycache__, temporary caches, etc.)
+├── CONTEXT.md                  # Comprehensive project context & architecture documentation
 ├── ua-logo.png                 # Official University of the Assumption Seal Logo
-└── templates\
-    ├── studentweb.html         # Student Voting Portal (DO NOT edit directly)
-    ├── adminweb.html           # Admin Console (DO NOT edit directly)
-    └── ua-logo.png             # Official Seal Logo
+├── static/
+│   ├── css/
+│   │   ├── student.css         # Custom student styling
+│   │   └── admin.css           # Custom admin console styling
+│   └── ua-logo.png             # Static branding asset
+├── templates/
+│   ├── studentweb.html         # Complete Student Voting Portal with Browsing Mode
+│   └── adminweb.html           # Administrator Console with per-dept buttons & Clear All
+├── College of Architecture/    # Candidate portrait directory
+├── College of Hospitality  Management/
+├── College of Industrial Engineering/
+├── College of Information Technology/
+├── College of Nursing/
+├── College of Pharmacy/
+├── JuniorHighSchool/
+├── School of Arts and Sciences (Criminology)/
+├── SeniorHighSchool/
+├── Siklab Party College of Accountancy/
+├── Siklab Party College of Engineering/
+├── Siklab Party College of Human Services/
+├── Siklab Party College of Psychology/
+├── Siklab Party College of Tourism Management/
+├── Siklab Party School of Arts and Sciences (ABCOMM)/
+├── Siklab Party School of Business/
+├── Siklab Party School of Education/
+└── UACSC Officers under Siklab/ # University Central Student Council candidates
 ```
-> Always edit `build_full_univote.py` then run `python build_full_univote.py` to regenerate templates.
 
 ---
 
-## 2. Academic Departments (10 Total — Exact Names, No Abbreviations)
+## 2. Academic Departments (17 Total — Alphabetical Order)
+All 17 university departments are strictly organized in alphabetical order across registration dropdowns, student filters, and admin tally selector buttons:
 
-| # | Department Name | Admin Card Color |
+| # | Department Name | Student Council Status |
 |---|---|---|
-| 1 | College of Accountancy | Indigo |
-| 2 | College of Engineering and Architecture | Amber |
-| 3 | College of Hospitality and Tourism Management | Emerald |
-| 4 | College of Nursing and Pharmacy | Rose |
-| 5 | School of Arts and Sciences | Purple |
-| 6 | School of Business and Public Administration | Sky Blue |
-| 7 | School of Education | Teal |
-| 8 | College of Information Technology | Blue |
-| 9 | Senior High School | Orange |
-| 10 | Junior High School | Cyan |
+| 1 | College of Accountancy | 6 Positions Active |
+| 2 | College of Architecture | 6 Positions Active |
+| 3 | College of Arts and Sciences (ABComm) | 6 Positions Active |
+| 4 | College of Engineering | 6 Positions Active |
+| 5 | College of Hospitality Management | 6 Positions Active |
+| 6 | College of Human Services | 6 Positions Active |
+| 7 | College of Industrial Engineering | 6 Positions Active |
+| 8 | College of Information Technology | 6 Positions Active |
+| 9 | College of Nursing | 6 Positions Active |
+| 10 | College of Pharmacy | 6 Positions Active |
+| 11 | College of Psychology | 6 Positions Active |
+| 12 | College of Tourism Management | 6 Positions Active |
+| 13 | Junior High School | 6 Positions Active |
+| 14 | School of Arts and Sciences (Criminology) | 6 Positions Active |
+| 15 | School of Business | 6 Positions Active |
+| 16 | School of Education | 6 Positions Active |
+| 17 | Senior High School | 6 Positions Active |
 
 ---
 
-## 3. Student Council Positions (6 Races Per Department)
-`pres` President · `vp` Vice President · `sec` Secretary · `tres` Treasurer · `aud` Auditor · `pro` PRO
+## 3. Council Positions (6 Races Per Department)
+Every department features the standard student council slate:
+1. `pres` — President
+2. `vp` — Vice President
+3. `sec` — Secretary
+4. `tres` — Treasurer
+5. `aud` — Auditor
+6. `pro` — Public Relations Officer (PRO)
 
 ---
 
-## 4. Candidate Seed Data
-- **Total**: 215 verified candidates across all academic departments
-- **Asset Folders**: Real candidate portraits with format `Name (Position).png`
-- **Party-list Affiliation Rules**:
-  - `SIKLAB`: Alyansang Siklab party-list across participating collegiate faculties and UACSC
-  - `Independent`: Automatically enforced for College of Architecture, College of Industrial Engineering, College of Information Technology, College of Nursing, College of Pharmacy, and School of Arts and Sciences (Criminology)
-  - Zero duplicate photos and zero placeholder candidate names
-- **Data Version Stamp**: `univote_v5_2026_11_08` — forces automatic localStorage candidate reseed on page load
+## 4. Student Portal Workflow & Security Architecture
+
+### A. Browsing Mode First (No Auto-Voting)
+* **Zero Pre-Selection**: `selectedChoices` is initialized as `{}` (completely empty) upon opening the website, signing in, or registering. No candidate is ever automatically pre-selected.
+* **Browsing Banner**: Upon sign-in, students land in **Browsing Mode**. A banner welcomes them, informs them of their department, and displays a prominent **"Start Voting"** button.
+* **Uncluttered UI**: The bottom ballot review bar is hidden during Browsing Mode so students can comfortably read candidate platforms, view partylists, and check certified results without distraction.
+* **Transition to Voting Mode**: Clicking **"Start Voting"** (or selecting any candidate) transitions the student into active voting mode, unhiding the bottom action bar with `0 of 6 Selected`.
+
+### B. Per-Student Vote Tracking
+* Votes are tracked per individual student ID (`univote_voted_student_ids`).
+* A student is only locked as "Ballot Already Cast" if their specific student account has submitted a ballot.
+* Other students on the same computer/browser start with an empty ballot.
+
+### C. Strict 6/6 Ballot Enforcement
+* Ballots can only be reviewed and submitted once all 6 council positions are selected.
+* Modals display exact selections before final confirmation.
+* Submission signs the ballot using **AES-256** and saves it to the encrypted audit log.
+* Generates a digital receipt featuring an immutable scannable QR Code, Print, and Download card actions.
+
+### D. Registration Validation Rules
+* **Student ID**: Strictly 10 digits with admission years between 2010 and 2026.
+* **Email Format**: Must follow institutional format `initials + lastname.student@ua.edu.ph`.
+* **Password Complexity**: Minimum 8 characters, requiring at least one special character (`* _ + @ # !`), rejecting sequential keys and common dictionary patterns.
+* **4 Duplicate Guards**: Rejects duplicate Student ID, duplicate Full Name, duplicate Institutional Email, and duplicate Password Hash.
 
 ---
 
-## 5. Seed Test Students
-| Student ID | Name | Department |
-|---|---|---|
-| 2024000669 | Maria Clara T. Santos | College of Accountancy |
-| 2023001244 | Juan Dela T. Cruz | College of Engineering and Architecture |
-| 2024001882 | Camille Rose P. Diaz | College of Hospitality and Tourism Management |
-| 2024006843 | Jaena B. Mangulabnan | College of Nursing and Pharmacy |
-| 2023004490 | Beatriz Nicole L. Gomez | School of Arts and Sciences |
-| 2022009831 | Sofia Bianca R. Dizon | School of Business and Public Administration |
-| 2024003319 | Mark Anthony V. Ramos | School of Education |
-| 2024001155 | Angelo G. Gomez | College of Information Technology |
-| 2024005576 | Jaenaganda M. Cruz | Senior High School |
-| 2024008812 | Joshua L. Garcia | Junior High School |
+## 5. Admin Management Console Architecture
 
-> Default test password: `Password@2026` (SHA-256: `85750059f33b118b6e6c278064c519d08ba2ff23ef983818e69818ce3eb64f7b`)
+### A. Department Winners & Tallies by Button
+* Displays all 17 departments as individual filter buttons in alphabetical order.
+* Clicking any department button isolates and displays only that department's winners, candidate vote tallies, percentage share, and lead indicators across all 6 positions.
+* Avoids overwhelming the administrator by not displaying all departments simultaneously.
 
----
-
-## 6. Administrative Functions
-- **Clear All Voting Data**:
-  - Accessible via Admin Dashboard Section 4 & Section 5 danger control
-  - Or via `python clear_voting_data.py`
-  - Wipes `univote_encrypted_ballots_db`, `univote_has_voted`, `univote_saved_choices`, and active session
-  - Strictly preserves candidate profiles (`univote_db_candidates`) and student enrollment rosters (`univote_db_students`)
+### B. Reliable "Clear All Voting Data"
+* Accessible right on the **Department Winners & Tallies** action header as well as in the **Election Settings** Danger Zone.
+* Uses a reliable native `confirm()` dialog with clear explanation (no typing friction).
+* Thoroughly wipes:
+  1. `univote_encrypted_ballots_db` (resets to `[]`)
+  2. `univote_voted_student_ids` (resets to `[]`)
+  3. `univote_has_voted`, `univote_saved_choices`, and all per-student vote keys
+  4. Active student voter sessions
+  5. Broadcasts `univote_reset_signal` so open student tabs reset in real-time
+* Strictly preserves candidate rosters (`univote_db_candidates`) and student enrollment records (`univote_db_students`).
 
 ---
 
-## 7. Dynamic Digital Voting Receipt & QR Code
-- Automatic display upon casting 6/6 complete ballot
-- Contains voting timestamp, student ID, full name, institutional email, department, and token
-- Lists all 6 selected candidates with official party badges
-- Displays AES-256 encrypted audit trail cipher
-- Generates permanent scannable QR Code (QRCode.js CDN + QR Server fallback)
-- Features 1-click **Print Receipt** and **Download Receipt** card functions
+## 6. Technology Stack Overview
 
----
+### Frontend
+* **HTML5**: Semantic template structure for student and admin web portals.
+* **JavaScript (ES6+)**: Core client-side business logic, reactive state, cryptography, and real-time computation.
+* **CSS3**: Layout styling, `@media print` print-sheet optimization for digital receipts, custom scrollbars.
+* **Tailwind CSS (v3)**: Utility-first CSS framework configured with custom UA brand colors (Navy `#020381`, Royal Blue `#1e3a8a`, Gold `#d97706`).
+* **CryptoJS**: **AES-256** ballot encryption and **SHA-256** voter token and password hashing.
+* **QRCode.js**: Scannable verification QR code generation.
+* **Canvas Confetti**: Celebratory particle effects upon successful ballot casting.
+* **Lucide Icons**: Comprehensive SVG icon set.
 
-## 6. Registration Validation Rules
-- **Student ID**: 10 digits, year 2010–2026
-- **Email**: `initials + lastname.student@ua.edu.ph` (e.g. `jdtcruz.student@ua.edu.ph`)
-- **Password**: Min 8 chars, must include `* _ + @ # !`, rejects common words, name/ID patterns
-
-### Duplicate Prevention (4 Strict Guards — no overwrite)
-1. **Student ID** already registered → blocked
-2. **Full Name** already registered → blocked (case-insensitive)
-3. **Email** already linked → blocked
-4. **Password hash** already used by another account → blocked
-
----
-
-## 7. Voting — Strict 6/6 Complete Ballot
-- Must select all 6 positions before submit button enables
-- Position tabs show `✓` / `0/1` real-time indicators
-- Both `openReviewModal()` and `submitBallot()` enforce the 6/6 guard
-
----
-
-## 8. UI Architecture
-- 3 fully separate modals: `#signInModal` (auto-closes on login) · `#registerModal` · `#regSuccessModal`
-- Password show/hide toggle on all password fields
-- Top locked banner (`#lockedAccountBanner`) removed after login
-- UA Life / ads / promotional banners removed
-
----
-
-## 9. Admin Console
-- Soft pastel per-department card headers, leading candidate bar in gold `amber-500`
-- Sections: Live Tallies · Student Management · Candidate Management · Election Settings · Audit Registry
-- Exact unabbreviated department names everywhere
+### Backend & DevOps
+* **Python 3 (3.11+)**: Primary backend language.
+* **`http.server.ThreadingHTTPServer`**: Multi-threaded concurrent HTTP request handling.
+* **Flask**: Secondary WSGI backend (`app.py`).
+* **Render YAML (`render.yaml`)**: Infrastructure-as-Code Blueprint for zero-cost free service deployment.
+* **Dockerfile**: Containerized definition for standardized container environments.
+* **Git & GitHub**: Version control and CI/CD repository at `https://github.com/jaena10/UniVote.git`.
