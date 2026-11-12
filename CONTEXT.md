@@ -1,5 +1,5 @@
 # UniVote — Project Context & Architecture
-**Last Updated**: 2026-11-09 00:22 PHT  
+**Last Updated**: 2026-11-09 21:35 PHT  
 **Institution**: University of the Assumption (UA Pampanga)  
 **Working Directory**: `D:\CODINGS\univote`  
 **GitHub Repository**: [https://github.com/jaena10/UniVote.git](https://github.com/jaena10/UniVote.git)  
@@ -104,11 +104,20 @@ Every department features the standard student council slate:
 * A student is only locked as "Ballot Already Cast" if their specific student account has submitted a ballot.
 * Other students on the same computer/browser start with an empty ballot.
 
-### C. Strict 6/6 Ballot Enforcement
-* Ballots can only be reviewed and submitted once all 6 council positions are selected.
-* Modals display exact selections before final confirmation.
-* Submission signs the ballot using **AES-256** and saves it to the encrypted audit log.
-* Generates a digital receipt featuring an immutable scannable QR Code, Print, and Download card actions.
+### C. Strict Ballot Completion, Universal "Abstain" Option & AES-256 Cryptographic Digital Receipt Card
+* **Universal "Abstain" Button & Option Card**: Every election contest (Central Student Council / UACSC, all 17 department councils, Senior High School, Junior High School, and student organization elections) provides an explicit **"Abstain"** button in each race header and a dedicated **"Abstain from Voting"** card in the candidate grid. Students can choose to formally abstain from any position. Selecting Abstain satisfies the ballot completion requirement for that race.
+* **Strict Complete Ballot Guard**: Ballots can only be reviewed and submitted once all eligible positions are decided (either by choosing a candidate or electing to abstain).
+* **Review Modal**: Groups and previews exact candidate selections and formal abstentions for both Central Council (UACSC) and Department Council before final confirmation.
+* **AES-256 Audit Signing**: Submission encrypts and signs the ballot using **AES-256** and records it to the cryptographic database, preserving both candidate votes and formal abstentions.
+* **Streamlined Digital Receipt Card (PNG & Modal)**:
+  * Contains official University of the Assumption branding and header, verification status badge, exact voting timestamp, academic department, and verified student credentials (ID, voter name, institutional email, voter token).
+  * Lists all official recorded candidate choices and formal abstentions across all contested positions.
+  * Bottom section features the authenticated **AES-256 AUDIT TRAIL CIPHER PAYLOAD** displaying the full cipher payload.
+  * Omit scannable QR block and legacy security disclaimer texts for a clean, professional, and audit-ready receipt card.
+* **Downloadable & Printable Digital Receipt Card**:
+  1. **Download Card (PNG)**: Renders the high-resolution branded digital receipt card with official UA seal, student info, candidate table, and AES-256 cipher payload to HTML5 Canvas and exports `UniVote_Receipt_Card_[StudentID].png`.
+  2. **Audit File (.txt)**: Downloads certified text audit log `UniVote_Receipt_[StudentID].txt`.
+  3. **Print Receipt**: Uses optimized `@media print` styling to print an official paper voting receipt sheet.
 
 ### D. Registration Validation Rules
 * **Student ID**: Strictly 10 digits with admission years between 2010 and 2026.
@@ -120,12 +129,24 @@ Every department features the standard student council slate:
 
 ## 5. Admin Management Console Architecture
 
-### A. Department Winners & Tallies by Button
-* Displays all 17 departments as individual filter buttons in alphabetical order.
-* Clicking any department button isolates and displays only that department's winners, candidate vote tallies, percentage share, and lead indicators across all 6 positions.
-* Avoids overwhelming the administrator by not displaying all departments simultaneously.
+### A. Department Winners & Central Council Tallies by Button
+* Displays **⭐ Central Student Council (UACSC)** along with all 17 departments as individual filter buttons.
+* Clicking **⭐ Central Student Council (UACSC)** tallies and highlights winners for UACSC positions across all ballots cast university-wide.
+* Clicking any department button isolates and displays that department's winners, candidate vote tallies, percentage share, lead indicators, and formal abstention counts across all positions.
+* Avoids overwhelming the administrator by displaying clean, focused council tallies on demand.
 
-### B. Reliable "Clear All Voting Data"
+### B. Student Management Full Records Display
+* Displays authentic student enrollment records across all departments with full student names (e.g., *Maria Clara T. Santos*, *Juan Carlos D. Dela Cruz*) instead of academic program labels.
+* Automatic data migration seamlessly upgrades legacy records to proper student names.
+
+### C. Student Bulk Deletion ("Delete All")
+* Accessible via the **"Delete All"** button on the Student Management roster toolbar.
+* Equipped with a **Safety Confirmation Modal** requiring explicit `DELETE ALL` confirmation typing to prevent accidental data loss.
+* Wipes `univote_db_students` to `[]`, invalidates active student sessions via `univote_reset_signal`, and maintains a clean zero-record state without auto-reseeding defaults.
+* Dispatches a call to the backend API endpoint (`POST /api/admin/delete-all-students`) implemented in both [`server.py`](file:///D:/CODINGS/univote/server.py) and [`app.py`](file:///D:/CODINGS/univote/app.py).
+* Strictly preserves candidate databases and cast ballot audit records.
+
+### D. Reliable "Clear All Voting Data"
 * Accessible right on the **Department Winners & Tallies** action header as well as in the **Election Settings** Danger Zone.
 * Uses a reliable native `confirm()` dialog with clear explanation (no typing friction).
 * Thoroughly wipes:
