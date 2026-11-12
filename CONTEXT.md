@@ -1,16 +1,116 @@
 # UniVote — Project Context & Architecture
-**Last Updated**: 2026-11-09 21:35 PHT  
+**Last Updated**: 2026-11-12 22:36 PHT  
 **Institution**: University of the Assumption (UA Pampanga)  
 **Working Directory**: `D:\CODINGS\univote`  
 **GitHub Repository**: [https://github.com/jaena10/UniVote.git](https://github.com/jaena10/UniVote.git)  
 **Render Deployment**: Configured via `render.yaml` (Free Tier)  
 
 | Portal | URL | Description |
-|---|---|---|
+|---
+
+## 7. Changelog — Session History
+
+### 2026-11-12 (Session)
+**Feature Added: Universal Abstain Button**
+- Added formal **"Abstain"** option to **every election race** across the entire UniVote system:
+  - ✅ Central Student Council (UACSC) — all positions
+  - ✅ All 17 departmental elections — all positions
+  - ✅ Senior High School elections — all positions
+  - ✅ Junior High School elections — all positions
+  - ✅ Student organization elections (year reps, chairpersons, etc.)
+- **Files Modified**:
+  - `templates/studentweb.html` — Abstain UI cards, header buttons, review modal, receipt modal, PNG canvas, .txt audit
+  - `templates/adminweb.html` — `abstainCounts` tally tracking, Formal Abstention row per position card
+  - `CONTEXT.md` — Architecture documentation updated
+- **Commit**: `9d006c4` pushed to `main` on [https://github.com/jaena10/UniVote.git](https://github.com/jaena10/UniVote.git)
+- **Key implementation details**:
+  - `selectedChoices[raceId] = 'ABSTAIN'` — sentinel value for abstentions in ballot payload
+  - Abstain satisfies ballot completion count — enables "Review & Cast" when all races decided
+  - `buildTalliesForDept` in adminweb splits `abstainCounts[posId]` from `candVoteCounts[candId]`
+  - Race key parsing: `uacsc_<posId>` → UACSC abstain; `dept_<posId>` → Department abstain
+  - All receipt outputs (modal, PNG, .txt) display abstentions cleanly with `⊘` icon and `ABSTAIN` label
+  - Results page (student portal) shows Abstain row with vote count and grey progress bar per position
+
+---|---
+
+## 7. Changelog — Session History
+
+### 2026-11-12 (Session)
+**Feature Added: Universal Abstain Button**
+- Added formal **"Abstain"** option to **every election race** across the entire UniVote system:
+  - ✅ Central Student Council (UACSC) — all positions
+  - ✅ All 17 departmental elections — all positions
+  - ✅ Senior High School elections — all positions
+  - ✅ Junior High School elections — all positions
+  - ✅ Student organization elections (year reps, chairpersons, etc.)
+- **Files Modified**:
+  - `templates/studentweb.html` — Abstain UI cards, header buttons, review modal, receipt modal, PNG canvas, .txt audit
+  - `templates/adminweb.html` — `abstainCounts` tally tracking, Formal Abstention row per position card
+  - `CONTEXT.md` — Architecture documentation updated
+- **Commit**: `9d006c4` pushed to `main` on [https://github.com/jaena10/UniVote.git](https://github.com/jaena10/UniVote.git)
+- **Key implementation details**:
+  - `selectedChoices[raceId] = 'ABSTAIN'` — sentinel value for abstentions in ballot payload
+  - Abstain satisfies ballot completion count — enables "Review & Cast" when all races decided
+  - `buildTalliesForDept` in adminweb splits `abstainCounts[posId]` from `candVoteCounts[candId]`
+  - Race key parsing: `uacsc_<posId>` → UACSC abstain; `dept_<posId>` → Department abstain
+  - All receipt outputs (modal, PNG, .txt) display abstentions cleanly with `⊘` icon and `ABSTAIN` label
+  - Results page (student portal) shows Abstain row with vote count and grey progress bar per position
+
+---|---
+
+## 7. Changelog — Session History
+
+### 2026-11-12 (Session)
+**Feature Added: Universal Abstain Button**
+- Added formal **"Abstain"** option to **every election race** across the entire UniVote system:
+  - ✅ Central Student Council (UACSC) — all positions
+  - ✅ All 17 departmental elections — all positions
+  - ✅ Senior High School elections — all positions
+  - ✅ Junior High School elections — all positions
+  - ✅ Student organization elections (year reps, chairpersons, etc.)
+- **Files Modified**:
+  - `templates/studentweb.html` — Abstain UI cards, header buttons, review modal, receipt modal, PNG canvas, .txt audit
+  - `templates/adminweb.html` — `abstainCounts` tally tracking, Formal Abstention row per position card
+  - `CONTEXT.md` — Architecture documentation updated
+- **Commit**: `9d006c4` pushed to `main` on [https://github.com/jaena10/UniVote.git](https://github.com/jaena10/UniVote.git)
+- **Key implementation details**:
+  - `selectedChoices[raceId] = 'ABSTAIN'` — sentinel value for abstentions in ballot payload
+  - Abstain satisfies ballot completion count — enables "Review & Cast" when all races decided
+  - `buildTalliesForDept` in adminweb splits `abstainCounts[posId]` from `candVoteCounts[candId]`
+  - Race key parsing: `uacsc_<posId>` → UACSC abstain; `dept_<posId>` → Department abstain
+  - All receipt outputs (modal, PNG, .txt) display abstentions cleanly with `⊘` icon and `ABSTAIN` label
+  - Results page (student portal) shows Abstain row with vote count and grey progress bar per position
+
+---|
 | Student Voting Portal | `http://127.0.0.1:5000/` | Student voting, candidate directory, partylists, results |
 | Admin Management Console | `http://127.0.0.1:5000/admin` | Live tallies, winners by department, clear voting data, roster |
 | Health Check Endpoint | `http://127.0.0.1:5000/healthz` | Zero-downtime healthcheck endpoint for Render |
 | Default Admin Credentials | Username: `admin` / Password: `ua2026admin` | UA Election Commission administrative credentials |
+
+---
+
+## 7. Changelog — Session History
+
+### 2026-11-12 (Session)
+**Feature Added: Universal Abstain Button**
+- Added formal **"Abstain"** option to **every election race** across the entire UniVote system:
+  - ✅ Central Student Council (UACSC) — all positions
+  - ✅ All 17 departmental elections — all positions
+  - ✅ Senior High School elections — all positions
+  - ✅ Junior High School elections — all positions
+  - ✅ Student organization elections (year reps, chairpersons, etc.)
+- **Files Modified**:
+  - `templates/studentweb.html` — Abstain UI cards, header buttons, review modal, receipt modal, PNG canvas, .txt audit
+  - `templates/adminweb.html` — `abstainCounts` tally tracking, Formal Abstention row per position card
+  - `CONTEXT.md` — Architecture documentation updated
+- **Commit**: `9d006c4` pushed to `main` on [https://github.com/jaena10/UniVote.git](https://github.com/jaena10/UniVote.git)
+- **Key implementation details**:
+  - `selectedChoices[raceId] = 'ABSTAIN'` — sentinel value for abstentions in ballot payload
+  - Abstain satisfies ballot completion count — enables "Review & Cast" when all races decided
+  - `buildTalliesForDept` in adminweb splits `abstainCounts[posId]` from `candVoteCounts[candId]`
+  - Race key parsing: `uacsc_<posId>` → UACSC abstain; `dept_<posId>` → Department abstain
+  - All receipt outputs (modal, PNG, .txt) display abstentions cleanly with `⊘` icon and `ABSTAIN` label
+  - Results page (student portal) shows Abstain row with vote count and grey progress bar per position
 
 ---
 
@@ -55,11 +155,111 @@ D:\CODINGS\univote\
 
 ---
 
+## 7. Changelog — Session History
+
+### 2026-11-12 (Session)
+**Feature Added: Universal Abstain Button**
+- Added formal **"Abstain"** option to **every election race** across the entire UniVote system:
+  - ✅ Central Student Council (UACSC) — all positions
+  - ✅ All 17 departmental elections — all positions
+  - ✅ Senior High School elections — all positions
+  - ✅ Junior High School elections — all positions
+  - ✅ Student organization elections (year reps, chairpersons, etc.)
+- **Files Modified**:
+  - `templates/studentweb.html` — Abstain UI cards, header buttons, review modal, receipt modal, PNG canvas, .txt audit
+  - `templates/adminweb.html` — `abstainCounts` tally tracking, Formal Abstention row per position card
+  - `CONTEXT.md` — Architecture documentation updated
+- **Commit**: `9d006c4` pushed to `main` on [https://github.com/jaena10/UniVote.git](https://github.com/jaena10/UniVote.git)
+- **Key implementation details**:
+  - `selectedChoices[raceId] = 'ABSTAIN'` — sentinel value for abstentions in ballot payload
+  - Abstain satisfies ballot completion count — enables "Review & Cast" when all races decided
+  - `buildTalliesForDept` in adminweb splits `abstainCounts[posId]` from `candVoteCounts[candId]`
+  - Race key parsing: `uacsc_<posId>` → UACSC abstain; `dept_<posId>` → Department abstain
+  - All receipt outputs (modal, PNG, .txt) display abstentions cleanly with `⊘` icon and `ABSTAIN` label
+  - Results page (student portal) shows Abstain row with vote count and grey progress bar per position
+
+---
+
 ## 2. Academic Departments (17 Total — Alphabetical Order)
 All 17 university departments are strictly organized in alphabetical order across registration dropdowns, student filters, and admin tally selector buttons:
 
 | # | Department Name | Student Council Status |
-|---|---|---|
+|---
+
+## 7. Changelog — Session History
+
+### 2026-11-12 (Session)
+**Feature Added: Universal Abstain Button**
+- Added formal **"Abstain"** option to **every election race** across the entire UniVote system:
+  - ✅ Central Student Council (UACSC) — all positions
+  - ✅ All 17 departmental elections — all positions
+  - ✅ Senior High School elections — all positions
+  - ✅ Junior High School elections — all positions
+  - ✅ Student organization elections (year reps, chairpersons, etc.)
+- **Files Modified**:
+  - `templates/studentweb.html` — Abstain UI cards, header buttons, review modal, receipt modal, PNG canvas, .txt audit
+  - `templates/adminweb.html` — `abstainCounts` tally tracking, Formal Abstention row per position card
+  - `CONTEXT.md` — Architecture documentation updated
+- **Commit**: `9d006c4` pushed to `main` on [https://github.com/jaena10/UniVote.git](https://github.com/jaena10/UniVote.git)
+- **Key implementation details**:
+  - `selectedChoices[raceId] = 'ABSTAIN'` — sentinel value for abstentions in ballot payload
+  - Abstain satisfies ballot completion count — enables "Review & Cast" when all races decided
+  - `buildTalliesForDept` in adminweb splits `abstainCounts[posId]` from `candVoteCounts[candId]`
+  - Race key parsing: `uacsc_<posId>` → UACSC abstain; `dept_<posId>` → Department abstain
+  - All receipt outputs (modal, PNG, .txt) display abstentions cleanly with `⊘` icon and `ABSTAIN` label
+  - Results page (student portal) shows Abstain row with vote count and grey progress bar per position
+
+---|---
+
+## 7. Changelog — Session History
+
+### 2026-11-12 (Session)
+**Feature Added: Universal Abstain Button**
+- Added formal **"Abstain"** option to **every election race** across the entire UniVote system:
+  - ✅ Central Student Council (UACSC) — all positions
+  - ✅ All 17 departmental elections — all positions
+  - ✅ Senior High School elections — all positions
+  - ✅ Junior High School elections — all positions
+  - ✅ Student organization elections (year reps, chairpersons, etc.)
+- **Files Modified**:
+  - `templates/studentweb.html` — Abstain UI cards, header buttons, review modal, receipt modal, PNG canvas, .txt audit
+  - `templates/adminweb.html` — `abstainCounts` tally tracking, Formal Abstention row per position card
+  - `CONTEXT.md` — Architecture documentation updated
+- **Commit**: `9d006c4` pushed to `main` on [https://github.com/jaena10/UniVote.git](https://github.com/jaena10/UniVote.git)
+- **Key implementation details**:
+  - `selectedChoices[raceId] = 'ABSTAIN'` — sentinel value for abstentions in ballot payload
+  - Abstain satisfies ballot completion count — enables "Review & Cast" when all races decided
+  - `buildTalliesForDept` in adminweb splits `abstainCounts[posId]` from `candVoteCounts[candId]`
+  - Race key parsing: `uacsc_<posId>` → UACSC abstain; `dept_<posId>` → Department abstain
+  - All receipt outputs (modal, PNG, .txt) display abstentions cleanly with `⊘` icon and `ABSTAIN` label
+  - Results page (student portal) shows Abstain row with vote count and grey progress bar per position
+
+---|---
+
+## 7. Changelog — Session History
+
+### 2026-11-12 (Session)
+**Feature Added: Universal Abstain Button**
+- Added formal **"Abstain"** option to **every election race** across the entire UniVote system:
+  - ✅ Central Student Council (UACSC) — all positions
+  - ✅ All 17 departmental elections — all positions
+  - ✅ Senior High School elections — all positions
+  - ✅ Junior High School elections — all positions
+  - ✅ Student organization elections (year reps, chairpersons, etc.)
+- **Files Modified**:
+  - `templates/studentweb.html` — Abstain UI cards, header buttons, review modal, receipt modal, PNG canvas, .txt audit
+  - `templates/adminweb.html` — `abstainCounts` tally tracking, Formal Abstention row per position card
+  - `CONTEXT.md` — Architecture documentation updated
+- **Commit**: `9d006c4` pushed to `main` on [https://github.com/jaena10/UniVote.git](https://github.com/jaena10/UniVote.git)
+- **Key implementation details**:
+  - `selectedChoices[raceId] = 'ABSTAIN'` — sentinel value for abstentions in ballot payload
+  - Abstain satisfies ballot completion count — enables "Review & Cast" when all races decided
+  - `buildTalliesForDept` in adminweb splits `abstainCounts[posId]` from `candVoteCounts[candId]`
+  - Race key parsing: `uacsc_<posId>` → UACSC abstain; `dept_<posId>` → Department abstain
+  - All receipt outputs (modal, PNG, .txt) display abstentions cleanly with `⊘` icon and `ABSTAIN` label
+  - Results page (student portal) shows Abstain row with vote count and grey progress bar per position
+
+---|
 | 1 | College of Accountancy | 6 Positions Active |
 | 2 | College of Architecture | 6 Positions Active |
 | 3 | College of Arts and Sciences (ABComm) | 6 Positions Active |
@@ -80,6 +280,31 @@ All 17 university departments are strictly organized in alphabetical order acros
 
 ---
 
+## 7. Changelog — Session History
+
+### 2026-11-12 (Session)
+**Feature Added: Universal Abstain Button**
+- Added formal **"Abstain"** option to **every election race** across the entire UniVote system:
+  - ✅ Central Student Council (UACSC) — all positions
+  - ✅ All 17 departmental elections — all positions
+  - ✅ Senior High School elections — all positions
+  - ✅ Junior High School elections — all positions
+  - ✅ Student organization elections (year reps, chairpersons, etc.)
+- **Files Modified**:
+  - `templates/studentweb.html` — Abstain UI cards, header buttons, review modal, receipt modal, PNG canvas, .txt audit
+  - `templates/adminweb.html` — `abstainCounts` tally tracking, Formal Abstention row per position card
+  - `CONTEXT.md` — Architecture documentation updated
+- **Commit**: `9d006c4` pushed to `main` on [https://github.com/jaena10/UniVote.git](https://github.com/jaena10/UniVote.git)
+- **Key implementation details**:
+  - `selectedChoices[raceId] = 'ABSTAIN'` — sentinel value for abstentions in ballot payload
+  - Abstain satisfies ballot completion count — enables "Review & Cast" when all races decided
+  - `buildTalliesForDept` in adminweb splits `abstainCounts[posId]` from `candVoteCounts[candId]`
+  - Race key parsing: `uacsc_<posId>` → UACSC abstain; `dept_<posId>` → Department abstain
+  - All receipt outputs (modal, PNG, .txt) display abstentions cleanly with `⊘` icon and `ABSTAIN` label
+  - Results page (student portal) shows Abstain row with vote count and grey progress bar per position
+
+---
+
 ## 3. Council Positions (6 Races Per Department)
 Every department features the standard student council slate:
 1. `pres` — President
@@ -88,6 +313,31 @@ Every department features the standard student council slate:
 4. `tres` — Treasurer
 5. `aud` — Auditor
 6. `pro` — Public Relations Officer (PRO)
+
+---
+
+## 7. Changelog — Session History
+
+### 2026-11-12 (Session)
+**Feature Added: Universal Abstain Button**
+- Added formal **"Abstain"** option to **every election race** across the entire UniVote system:
+  - ✅ Central Student Council (UACSC) — all positions
+  - ✅ All 17 departmental elections — all positions
+  - ✅ Senior High School elections — all positions
+  - ✅ Junior High School elections — all positions
+  - ✅ Student organization elections (year reps, chairpersons, etc.)
+- **Files Modified**:
+  - `templates/studentweb.html` — Abstain UI cards, header buttons, review modal, receipt modal, PNG canvas, .txt audit
+  - `templates/adminweb.html` — `abstainCounts` tally tracking, Formal Abstention row per position card
+  - `CONTEXT.md` — Architecture documentation updated
+- **Commit**: `9d006c4` pushed to `main` on [https://github.com/jaena10/UniVote.git](https://github.com/jaena10/UniVote.git)
+- **Key implementation details**:
+  - `selectedChoices[raceId] = 'ABSTAIN'` — sentinel value for abstentions in ballot payload
+  - Abstain satisfies ballot completion count — enables "Review & Cast" when all races decided
+  - `buildTalliesForDept` in adminweb splits `abstainCounts[posId]` from `candVoteCounts[candId]`
+  - Race key parsing: `uacsc_<posId>` → UACSC abstain; `dept_<posId>` → Department abstain
+  - All receipt outputs (modal, PNG, .txt) display abstentions cleanly with `⊘` icon and `ABSTAIN` label
+  - Results page (student portal) shows Abstain row with vote count and grey progress bar per position
 
 ---
 
@@ -127,6 +377,31 @@ Every department features the standard student council slate:
 
 ---
 
+## 7. Changelog — Session History
+
+### 2026-11-12 (Session)
+**Feature Added: Universal Abstain Button**
+- Added formal **"Abstain"** option to **every election race** across the entire UniVote system:
+  - ✅ Central Student Council (UACSC) — all positions
+  - ✅ All 17 departmental elections — all positions
+  - ✅ Senior High School elections — all positions
+  - ✅ Junior High School elections — all positions
+  - ✅ Student organization elections (year reps, chairpersons, etc.)
+- **Files Modified**:
+  - `templates/studentweb.html` — Abstain UI cards, header buttons, review modal, receipt modal, PNG canvas, .txt audit
+  - `templates/adminweb.html` — `abstainCounts` tally tracking, Formal Abstention row per position card
+  - `CONTEXT.md` — Architecture documentation updated
+- **Commit**: `9d006c4` pushed to `main` on [https://github.com/jaena10/UniVote.git](https://github.com/jaena10/UniVote.git)
+- **Key implementation details**:
+  - `selectedChoices[raceId] = 'ABSTAIN'` — sentinel value for abstentions in ballot payload
+  - Abstain satisfies ballot completion count — enables "Review & Cast" when all races decided
+  - `buildTalliesForDept` in adminweb splits `abstainCounts[posId]` from `candVoteCounts[candId]`
+  - Race key parsing: `uacsc_<posId>` → UACSC abstain; `dept_<posId>` → Department abstain
+  - All receipt outputs (modal, PNG, .txt) display abstentions cleanly with `⊘` icon and `ABSTAIN` label
+  - Results page (student portal) shows Abstain row with vote count and grey progress bar per position
+
+---
+
 ## 5. Admin Management Console Architecture
 
 ### A. Department Winners & Central Council Tallies by Button
@@ -156,6 +431,31 @@ Every department features the standard student council slate:
   4. Active student voter sessions
   5. Broadcasts `univote_reset_signal` so open student tabs reset in real-time
 * Strictly preserves candidate rosters (`univote_db_candidates`) and student enrollment records (`univote_db_students`).
+
+---
+
+## 7. Changelog — Session History
+
+### 2026-11-12 (Session)
+**Feature Added: Universal Abstain Button**
+- Added formal **"Abstain"** option to **every election race** across the entire UniVote system:
+  - ✅ Central Student Council (UACSC) — all positions
+  - ✅ All 17 departmental elections — all positions
+  - ✅ Senior High School elections — all positions
+  - ✅ Junior High School elections — all positions
+  - ✅ Student organization elections (year reps, chairpersons, etc.)
+- **Files Modified**:
+  - `templates/studentweb.html` — Abstain UI cards, header buttons, review modal, receipt modal, PNG canvas, .txt audit
+  - `templates/adminweb.html` — `abstainCounts` tally tracking, Formal Abstention row per position card
+  - `CONTEXT.md` — Architecture documentation updated
+- **Commit**: `9d006c4` pushed to `main` on [https://github.com/jaena10/UniVote.git](https://github.com/jaena10/UniVote.git)
+- **Key implementation details**:
+  - `selectedChoices[raceId] = 'ABSTAIN'` — sentinel value for abstentions in ballot payload
+  - Abstain satisfies ballot completion count — enables "Review & Cast" when all races decided
+  - `buildTalliesForDept` in adminweb splits `abstainCounts[posId]` from `candVoteCounts[candId]`
+  - Race key parsing: `uacsc_<posId>` → UACSC abstain; `dept_<posId>` → Department abstain
+  - All receipt outputs (modal, PNG, .txt) display abstentions cleanly with `⊘` icon and `ABSTAIN` label
+  - Results page (student portal) shows Abstain row with vote count and grey progress bar per position
 
 ---
 
